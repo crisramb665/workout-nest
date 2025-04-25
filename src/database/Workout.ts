@@ -1,9 +1,21 @@
+/** local imports */
 import WorkoutDB from './db.json'
 import { saveToDatabase } from './utils'
 
-const getAllWorkouts = () => WorkoutDB.workouts
+export type WorkoutData = {
+  id: string
+  name: string
+  mode: string
+  equipment: string[]
+  exercises: string[]
+  createdAt: string
+  updatedAt: string
+  trainerTips: string[]
+}
 
-const getOneWorkout = (workoutId: string) => {
+const getAllWorkouts = (): WorkoutData[] => WorkoutDB.workouts
+
+const getOneWorkout = (workoutId: string): WorkoutData | undefined => {
   const workout = WorkoutDB.workouts.find((workout) => workout.id === workoutId)
 
   if (!workout) return
@@ -11,7 +23,7 @@ const getOneWorkout = (workoutId: string) => {
   return workout
 }
 
-const createNewWorkout = (newWorkout: any) => {
+const createNewWorkout = (newWorkout: WorkoutData): WorkoutData | undefined => {
   const isAlreadyAdded = WorkoutDB.workouts.findIndex((workout) => workout.name === newWorkout.name) > -1
 
   if (isAlreadyAdded) return
@@ -39,7 +51,7 @@ const updateOneWorkout = (workoutId: string, changes: any) => {
   return updatedWorkout
 }
 
-const deleteOneWorkout = (workoutId: any) => {
+const deleteOneWorkout = (workoutId: string): void => {
   const indexForRemove = WorkoutDB.workouts.findIndex((workout) => workout.id === workoutId)
 
   if (indexForRemove === -1) return
