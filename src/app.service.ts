@@ -36,5 +36,6 @@ export class AppService {
 
   deleteOneWorkout(workoutId: string): void {
     Workout.deleteOneWorkout(workoutId)
+    return
   }
 }
