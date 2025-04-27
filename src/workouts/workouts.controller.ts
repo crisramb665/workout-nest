@@ -1,5 +1,5 @@
 /** npm imports */
-import { Body, Controller, Get, HttpCode, NotFoundException, Param, Post } from '@nestjs/common'
+import { Body, Controller, Delete, Get, HttpCode, NotFoundException, Param, Patch, Post } from '@nestjs/common'
 
 /** local imports */
 import { type WorkoutData } from '../database/Workout'
@@ -38,5 +38,24 @@ export class WorkoutsController {
     if (!newWorkout) throw new NotFoundException('Error creating workout')
 
     return newWorkout
+  }
+
+  @Patch(':workoutId')
+  updateOneWorkout(@Param('workoutId') workoutId: string, @Body() changes: any) {
+    const updatedWorkout = this.workoutsService.updateOneWorkout(workoutId, changes)
+
+    if (!updatedWorkout) throw new NotFoundException(`Workout with id ${workoutId} not found`)
+
+    return updatedWorkout
+  }
+
+  @Delete(':workoutId')
+  deleteOneWorkout(@Param('workoutId') workoutId: string) {
+    const workout = this.workoutsService.getOneWorkout(workoutId)
+    if (!workout) throw new NotFoundException(`Workout with id ${workoutId} not found`)
+
+    this.workoutsService.deleteOneWorkout(workoutId)
+
+    return { message: `Workout with id ${workoutId} deleted successfully` }
   }
 }

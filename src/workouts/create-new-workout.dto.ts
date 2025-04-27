@@ -1,3 +1,4 @@
+/** npm imports */
 import { IsString, IsOptional, IsUUID, IsDefined, IsArray, IsDateString } from 'class-validator'
 
 export class CreateNewWorkoutDto {
