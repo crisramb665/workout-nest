@@ -17,7 +17,8 @@ export class WorkoutsService {
     return getOneWorkout
   }
 
-  createNewWorkout(newWorkout: WorkoutData): WorkoutData | undefined {
+  createNewWorkout(newWorkout: Omit<WorkoutData, 'id' | 'createdAt' | 'updatedAt'>): WorkoutData | undefined {
+    console.log('newWorkout', { newWorkout })
     const workoutToInsert = {
       ...newWorkout,
       id: uuidv4(),

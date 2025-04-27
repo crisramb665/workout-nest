@@ -4,6 +4,7 @@ import { Body, Controller, Get, HttpCode, NotFoundException, Param, Post } from 
 /** local imports */
 import { type WorkoutData } from '../database/Workout'
 import { WorkoutsService } from './workouts.service'
+import { CreateNewWorkoutDto } from './create-new-workout.dto'
 
 @Controller('v1/workouts')
 export class WorkoutsController {
@@ -31,8 +32,8 @@ export class WorkoutsController {
 
   @Post()
   @HttpCode(201)
-  createNewWorkout(@Body() workoutData: any) {
-    const newWorkout = this.workoutsService.createNewWorkout(workoutData)
+  createNewWorkout(@Body() createNewWorkoutDto: CreateNewWorkoutDto) {
+    const newWorkout = this.workoutsService.createNewWorkout(createNewWorkoutDto)
 
     if (!newWorkout) throw new NotFoundException('Error creating workout')
 
