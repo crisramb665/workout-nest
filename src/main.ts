@@ -6,7 +6,7 @@ import { ConfigService } from '@nestjs/config'
 /** local imports */
 import { AppModule } from './app.module'
 
-async function bootstrap(): Promise<void> {
+const bootstrap = async (): Promise<void> => {
   try {
     const app = await NestFactory.create(AppModule)
 
