@@ -1,23 +1,18 @@
 /** npm imports */
 import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
-import { MongooseModule } from '@nestjs/mongoose'
 
 /** local imports */
 import appConfig from './config/app.config'
+import databaseConfig from './config/database.config'
+import { DatabaseModule } from './database/database.module'
 import { WorkoutsModule } from './workouts/workouts.module'
 import { HealthModule } from './health/health.module'
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, load: [appConfig] }),
-    MongooseModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        uri: configService.get<string>('databaseUrl'),
-      }),
-    }),
+    ConfigModule.forRoot({ isGlobal: true, load: [appConfig, databaseConfig] }),
+    DatabaseModule,
     HealthModule,
     WorkoutsModule,
   ],
