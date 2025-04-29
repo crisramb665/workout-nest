@@ -25,3 +25,5 @@ export class Workout extends Document {
   @Prop({ default: Date.now })
   updatedAt: string
 }
+
+export const WorkoutSchema = SchemaFactory.createForClass(Workout)

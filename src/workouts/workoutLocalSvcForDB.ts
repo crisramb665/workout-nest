@@ -3,8 +3,8 @@ import { Injectable } from '@nestjs/common'
 import { v4 as uuidv4 } from 'uuid'
 
 /** local imports */
-import { type WorkoutData } from '../database/types'
 import Workout from '../database/Workout'
+import { type WorkoutData } from '../database/types'
 
 @Injectable()
 export class WorkoutsService {

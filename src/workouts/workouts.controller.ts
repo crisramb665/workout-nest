@@ -2,7 +2,7 @@
 import { Body, Controller, Delete, Get, HttpCode, NotFoundException, Param, Patch, Post } from '@nestjs/common'
 
 /** local imports */
-import { type WorkoutData } from '../database/Workout'
+import { type WorkoutData } from '../database/types'
 import { WorkoutsService } from './workouts.service'
 import { CreateNewWorkoutDto } from './create-new-workout.dto'
 
