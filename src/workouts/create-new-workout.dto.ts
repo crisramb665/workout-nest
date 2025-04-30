@@ -1,10 +1,10 @@
 /** npm imports */
-import { IsString, IsOptional, IsUUID, IsDefined, IsArray, IsDateString } from 'class-validator'
+import { IsString, IsOptional, IsUUID, IsDefined, IsArray } from 'class-validator'
 
 export class CreateNewWorkoutDto {
   @IsOptional()
   @IsUUID()
-  id?: string
+  _id?: string
 
   @IsDefined()
   @IsString()
@@ -23,14 +23,6 @@ export class CreateNewWorkoutDto {
   @IsArray()
   @IsString({ each: true })
   exercises!: string[]
-
-  @IsOptional()
-  @IsDateString()
-  createdAt!: string
-
-  @IsOptional()
-  @IsDateString()
-  updatedAt!: string
 
   @IsDefined()
   @IsArray()

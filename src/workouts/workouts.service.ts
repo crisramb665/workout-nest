@@ -1,41 +1,39 @@
 /** npm imports */
 import { Injectable } from '@nestjs/common'
-import { v4 as uuidv4 } from 'uuid'
+import { InjectModel } from '@nestjs/mongoose'
+import { Model } from 'mongoose'
 
 /** local imports */
-import Workout, { type WorkoutData } from '../database/Workout'
+import { type WorkoutData } from '../database/types'
+import Workout from '../database/Workout'
+import { WorkoutDocument, Workout as WorkoutSchemaClass } from './schemas/workout.schema'
+import { CreateNewWorkoutDto } from './create-new-workout.dto'
 
 @Injectable()
 export class WorkoutsService {
-  getAllWorkouts(): WorkoutData[] {
-    const getAllWorkouts = Workout.getAllWorkouts()
-    return getAllWorkouts
+  constructor(@InjectModel(WorkoutSchemaClass.name) private workoutModel: Model<WorkoutDocument>) {}
+
+  async getAllWorkouts(): Promise<WorkoutDocument[]> {
+    return this.workoutModel.find().exec()
   }
 
-  getOneWorkout(workoutId: string): WorkoutData | undefined {
-    const getOneWorkout = Workout.getOneWorkout(workoutId)
-    return getOneWorkout
+  async getOneWorkout(workoutId: string): Promise<WorkoutDocument | null> {
+    console.log({ workoutId })
+    return this.workoutModel.findOne({ _id: workoutId }).exec()
   }
 
-  createNewWorkout(newWorkout: Omit<WorkoutData, 'id' | 'createdAt' | 'updatedAt'>): WorkoutData | undefined {
-    const workoutToInsert = {
-      ...newWorkout,
-      id: uuidv4(),
-      createdAt: new Date().toLocaleString('en-US', { timeZone: 'UTC' }),
-      updatedAt: new Date().toLocaleString('en-US', { timeZone: 'UTC' }),
-    }
-
-    const createNewWorkout = Workout.createNewWorkout(workoutToInsert)
-    return createNewWorkout
+  async createNewWorkout(createNewWorkoutDto: CreateNewWorkoutDto): Promise<WorkoutDocument> {
+    const createdWorkout = new this.workoutModel(createNewWorkoutDto)
+    return createdWorkout.save()
   }
 
-  updateOneWorkout(workoutId: string, changes: any): WorkoutData | undefined {
-    const updateOneWorkout = Workout.updateOneWorkout(workoutId, changes)
-    return updateOneWorkout
+  async updateOneWorkout(workoutId: string, changes: Partial<CreateNewWorkoutDto>): Promise<WorkoutDocument | null> {
+    const updatedWorkout = this.workoutModel.findByIdAndUpdate({ _id: workoutId }, changes).exec()
+    return updatedWorkout
   }
 
-  deleteOneWorkout(workoutId: string): void {
-    Workout.deleteOneWorkout(workoutId)
+  async deleteOneWorkout(workoutId: string): Promise<void> {
+    this.workoutModel.deleteOne({ _id: workoutId }).exec()
     return
   }
 }

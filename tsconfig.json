@@ -2,6 +2,7 @@
   "compilerOptions": {
     "module": "CommonJS",
     "target": "ES2021",
+    "strictPropertyInitialization": false,
     "strict": true,
     "baseUrl": "./",
     "moduleResolution": "node",

@@ -2,9 +2,10 @@
 import { Body, Controller, Delete, Get, HttpCode, NotFoundException, Param, Patch, Post } from '@nestjs/common'
 
 /** local imports */
-import { type WorkoutData } from '../database/Workout'
+import { type WorkoutData } from '../database/types'
 import { WorkoutsService } from './workouts.service'
 import { CreateNewWorkoutDto } from './create-new-workout.dto'
+import { WorkoutDocument } from './schemas/workout.schema'
 
 @Controller('v1/workouts')
 export class WorkoutsController {
@@ -15,8 +16,8 @@ export class WorkoutsController {
   }
 
   @Get()
-  getAllWorkouts(): WorkoutData[] {
-    const workouts = this.workoutsService.getAllWorkouts()
+  async getAllWorkouts(): Promise<WorkoutDocument[]> {
+    const workouts = await this.workoutsService.getAllWorkouts()
     if (workouts.length === 0) throw new NotFoundException('No workouts found')
 
     return workouts
@@ -41,10 +42,11 @@ export class WorkoutsController {
   }
 
   @Patch(':workoutId')
-  updateOneWorkout(@Param('workoutId') workoutId: string, @Body() changes: any) {
-    const updatedWorkout = this.workoutsService.updateOneWorkout(workoutId, changes)
+  updateOneWorkout(@Param('workoutId') workoutId: string, @Body() changes: Partial<CreateNewWorkoutDto>) {
+    const workout = this.workoutsService.getOneWorkout(workoutId)
 
-    if (!updatedWorkout) throw new NotFoundException(`Workout with id ${workoutId} not found`)
+    if (!workout) throw new NotFoundException(`Workout with id ${workoutId} not found`)
+    const updatedWorkout = this.workoutsService.updateOneWorkout(workoutId, changes)
 
     return updatedWorkout
   }

@@ -1,17 +1,8 @@
 /** local imports */
 import WorkoutDB from './db.json'
 import { saveToDatabase } from './utils'
+import { type WorkoutData } from './types'
 
-export type WorkoutData = {
-  id: string
-  name: string
-  mode: string
-  equipment: string[]
-  exercises: string[]
-  createdAt: string
-  updatedAt: string
-  trainerTips: string[]
-}
 
 const getAllWorkouts = (): WorkoutData[] => WorkoutDB.workouts
 
