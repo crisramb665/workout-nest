@@ -5,6 +5,7 @@ import { Body, Controller, Delete, Get, HttpCode, NotFoundException, Param, Patc
 import { type WorkoutData } from '../database/types'
 import { WorkoutsService } from './workouts.service'
 import { CreateNewWorkoutDto } from './create-new-workout.dto'
+import { WorkoutDocument } from './schemas/workout.schema'
 
 @Controller('v1/workouts')
 export class WorkoutsController {
@@ -15,20 +16,20 @@ export class WorkoutsController {
   }
 
   @Get()
-  async getAllWorkouts() {
+  async getAllWorkouts(): Promise<WorkoutDocument[]> {
     const workouts = await this.workoutsService.getAllWorkouts()
     if (workouts.length === 0) throw new NotFoundException('No workouts found')
 
     return workouts
   }
 
-  // @Get(':workoutId')
-  // getOneWorkout(@Param('workoutId') workoutId: string) {
-  //   const workout = this.workoutsService.getOneWorkout(workoutId)
-  //   if (!workout) throw new NotFoundException(`Workout with id ${workoutId} not found`)
+  @Get(':workoutId')
+  getOneWorkout(@Param('workoutId') workoutId: string) {
+    const workout = this.workoutsService.getOneWorkout(workoutId)
+    if (!workout) throw new NotFoundException(`Workout with id ${workoutId} not found`)
 
-  //   return workout
-  // }
+    return workout
+  }
 
   @Post()
   @HttpCode(201)
@@ -40,22 +41,23 @@ export class WorkoutsController {
     return newWorkout
   }
 
-  // @Patch(':workoutId')
-  // updateOneWorkout(@Param('workoutId') workoutId: string, @Body() changes: any) {
-  //   const updatedWorkout = this.workoutsService.updateOneWorkout(workoutId, changes)
+  @Patch(':workoutId')
+  updateOneWorkout(@Param('workoutId') workoutId: string, @Body() changes: Partial<CreateNewWorkoutDto>) {
+    const workout = this.workoutsService.getOneWorkout(workoutId)
 
-  //   if (!updatedWorkout) throw new NotFoundException(`Workout with id ${workoutId} not found`)
+    if (!workout) throw new NotFoundException(`Workout with id ${workoutId} not found`)
+    const updatedWorkout = this.workoutsService.updateOneWorkout(workoutId, changes)
 
-  //   return updatedWorkout
-  // }
+    return updatedWorkout
+  }
 
-  // @Delete(':workoutId')
-  // deleteOneWorkout(@Param('workoutId') workoutId: string) {
-  //   const workout = this.workoutsService.getOneWorkout(workoutId)
-  //   if (!workout) throw new NotFoundException(`Workout with id ${workoutId} not found`)
+  @Delete(':workoutId')
+  deleteOneWorkout(@Param('workoutId') workoutId: string) {
+    const workout = this.workoutsService.getOneWorkout(workoutId)
+    if (!workout) throw new NotFoundException(`Workout with id ${workoutId} not found`)
 
-  //   this.workoutsService.deleteOneWorkout(workoutId)
+    this.workoutsService.deleteOneWorkout(workoutId)
 
-  //   return { message: `Workout with id ${workoutId} deleted successfully` }
-  // }
+    return { message: `Workout with id ${workoutId} deleted successfully` }
+  }
 }
