@@ -1,9 +1,14 @@
 /** npm imports */
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Document } from 'mongoose'
+import { v4 as uuidV4 } from 'uuid'
 
-@Schema()
+export type WorkoutDocument = Workout & Document
+@Schema({ timestamps: true })
 export class Workout extends Document {
+  @Prop({ default: uuidV4 })
+  _id: string
+
   @Prop({ required: true })
   name: string
 
@@ -19,11 +24,13 @@ export class Workout extends Document {
   @Prop({ required: true, type: [String] })
   trainerTips: string[]
 
-  @Prop({ default: Date.now })
-  createdAt: string
+  @Prop()
+  createdAt: Date
 
-  @Prop({ default: Date.now })
-  updatedAt: string
+  @Prop()
+  updatedAt: Date
 }
 
 export const WorkoutSchema = SchemaFactory.createForClass(Workout)
+
+WorkoutSchema.set('versionKey', false)

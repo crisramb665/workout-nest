@@ -1,5 +1,5 @@
 /** npm imports */
-import { IsString, IsOptional, IsUUID, IsDefined, IsArray, IsDateString } from 'class-validator'
+import { IsString, IsOptional, IsUUID, IsDefined, IsArray } from 'class-validator'
 
 export class CreateNewWorkoutDto {
   @IsOptional()

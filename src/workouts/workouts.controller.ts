@@ -15,20 +15,20 @@ export class WorkoutsController {
   }
 
   @Get()
-  getAllWorkouts(): WorkoutData[] {
-    const workouts = this.workoutsService.getAllWorkouts()
+  async getAllWorkouts() {
+    const workouts = await this.workoutsService.getAllWorkouts()
     if (workouts.length === 0) throw new NotFoundException('No workouts found')
 
     return workouts
   }
 
-  @Get(':workoutId')
-  getOneWorkout(@Param('workoutId') workoutId: string) {
-    const workout = this.workoutsService.getOneWorkout(workoutId)
-    if (!workout) throw new NotFoundException(`Workout with id ${workoutId} not found`)
+  // @Get(':workoutId')
+  // getOneWorkout(@Param('workoutId') workoutId: string) {
+  //   const workout = this.workoutsService.getOneWorkout(workoutId)
+  //   if (!workout) throw new NotFoundException(`Workout with id ${workoutId} not found`)
 
-    return workout
-  }
+  //   return workout
+  // }
 
   @Post()
   @HttpCode(201)
@@ -40,22 +40,22 @@ export class WorkoutsController {
     return newWorkout
   }
 
-  @Patch(':workoutId')
-  updateOneWorkout(@Param('workoutId') workoutId: string, @Body() changes: any) {
-    const updatedWorkout = this.workoutsService.updateOneWorkout(workoutId, changes)
+  // @Patch(':workoutId')
+  // updateOneWorkout(@Param('workoutId') workoutId: string, @Body() changes: any) {
+  //   const updatedWorkout = this.workoutsService.updateOneWorkout(workoutId, changes)
 
-    if (!updatedWorkout) throw new NotFoundException(`Workout with id ${workoutId} not found`)
+  //   if (!updatedWorkout) throw new NotFoundException(`Workout with id ${workoutId} not found`)
 
-    return updatedWorkout
-  }
+  //   return updatedWorkout
+  // }
 
-  @Delete(':workoutId')
-  deleteOneWorkout(@Param('workoutId') workoutId: string) {
-    const workout = this.workoutsService.getOneWorkout(workoutId)
-    if (!workout) throw new NotFoundException(`Workout with id ${workoutId} not found`)
+  // @Delete(':workoutId')
+  // deleteOneWorkout(@Param('workoutId') workoutId: string) {
+  //   const workout = this.workoutsService.getOneWorkout(workoutId)
+  //   if (!workout) throw new NotFoundException(`Workout with id ${workoutId} not found`)
 
-    this.workoutsService.deleteOneWorkout(workoutId)
+  //   this.workoutsService.deleteOneWorkout(workoutId)
 
-    return { message: `Workout with id ${workoutId} deleted successfully` }
-  }
+  //   return { message: `Workout with id ${workoutId} deleted successfully` }
+  // }
 }
