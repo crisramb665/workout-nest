@@ -9,8 +9,17 @@ import Workout from '../database/Workout'
 import { WorkoutDocument, Workout as WorkoutSchemaClass } from './schemas/workout.schema'
 import { CreateNewWorkoutDto } from './create-new-workout.dto'
 
-@Injectable()
+/**
+ * @description WorkoutsService class that provides methods to manage workouts.
+ * - Uses the Workout model to interact with the database.
+ * - Provides methods to get all workouts, get a specific workout, create a new workout,
+ * update an existing workout, and delete a workout.
+ */
+@Injectable() // This decorator marks the class as a provider that can be injected into other classes
+// and services in the NestJS application.
 export class WorkoutsService {
+  // Inject the Workout model into the service using Mongoose's @InjectModel decorator
+  // This allows the service to interact with the Workout collection in the MongoDB database.
   constructor(@InjectModel(WorkoutSchemaClass.name) private workoutModel: Model<WorkoutDocument>) {}
 
   async getAllWorkouts(): Promise<WorkoutDocument[]> {
