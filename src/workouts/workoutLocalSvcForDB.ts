@@ -6,6 +6,12 @@ import { v4 as uuidv4 } from 'uuid'
 import Workout from '../database/Workout'
 import { type WorkoutData } from '../database/types'
 
+/**
+ * @description WorkoutsService class that provides methods to manage workouts.
+ * - Uses the Workout model to interact with the database.
+ * - Provides methods to get all workouts, get a specific workout, create a new workout,
+ *  update an existing workout, and delete a workout.
+ */
 @Injectable()
 export class WorkoutsService {
   getAllWorkouts(): WorkoutData[] {
